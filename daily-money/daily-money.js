@@ -1,29 +1,25 @@
 Incomes = new Mongo.Collection("incomes");
 
 if (Meteor.isClient) {
-  // counter starts at 0
-  Session.setDefault('s_income', 0);
 
-  Template.income.helpers({
-    income: function () {
-      return Session.get('s_income');
-    }
-  });
-
-  Template.income.events({
-    'submit #income-form': function () {
+  Template.body.events({
+    'submit .income-form': function () {
           // update the saved income
-        Session.set('s_income', text);
+         console.log("submit");
+         console.log($('.income-form input.income').val());
+        
+        var text = $('.income-form input.income').val()
 
-        Tasks.insert({
-          user: 'kai',
+        Incomes.insert({
+          username: Meteor.user().username,
           value: text,
           createdAt: new Date(),
-          deleted: false
+          deleted: false,
+          owner: Meteor.userId()
         });
 
         // Clear form
-        event.target.text.value = "";
+        event.target.text = "";
 
         // Prevent default form submit
         return false;
@@ -36,8 +32,26 @@ if (Meteor.isClient) {
     incomes: function () {
       return Incomes.find({}, {sort: {createdAt: -1}});
     }
+       
+  //  income_total: function () {
+  //     return Incomes.
+ //  }   
+
   });
+    
+    Template.income.events({
+        "click .delete": function () {
+            console.log("deleting " + this._id);
+            Incomes.remove(this._id);
+        }
+    });
+
+    
+    Accounts.ui.config({
+        passwordSignupFields: "USERNAME_ONLY"
+    });
 }
+
 
 if (Meteor.isServer) {
   Meteor.startup(function () {
