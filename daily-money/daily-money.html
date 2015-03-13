@@ -3,18 +3,20 @@
 </head>
 
 <body>
-    <form id='income-form'>
-        <h1>Enter your income</h1>
+    <form class='income-form'>
+        <p>Enter your income</p>
         <input type='text' class='income' placeholder="Type to add a new income" />
           <button type="submit">Save</button>
     </form>
     <ul>
+       Incomes
       {{#each incomes}}
-        {{> income}}
+       £{{value}} - By {{user}} at {{createdAt}}
+        <br/>
       {{/each}}
     </ul>
 </body>
 
 <template name="income">
-  <p>You have £{{income}} income per month.</p>
+  <p>.</p>
 </template>

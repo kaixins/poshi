@@ -4,18 +4,23 @@ if (Meteor.isClient) {
   // counter starts at 0
   Session.setDefault('s_income', 0);
 
-  Template.income.helpers({
-    income: function () {
-      return Session.get('s_income');
-    }
-  });
+  //Template.income.helpers({
+   // income: function () {
+  //    return Session.get('s_income');
+  //  }
+  //});
 
-  Template.income.events({
-    'submit #income-form': function () {
+  Template.body.events({
+    'submit .income-form': function () {
           // update the saved income
-        Session.set('s_income', text);
+         console.log("submit");
+         console.log($('.income-form input.income').val());
 
-        Tasks.insert({
+        var text = $('.income-form input.income').val()
+
+       // Session.set('s_income', text);
+
+        Incomes.insert({
           user: 'kai',
           value: text,
           createdAt: new Date(),
@@ -23,7 +28,7 @@ if (Meteor.isClient) {
         });
 
         // Clear form
-        event.target.text.value = "";
+        event.target.text = "";
 
         // Prevent default form submit
         return false;
