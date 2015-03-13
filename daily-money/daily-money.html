@@ -8,21 +8,21 @@
     </div>
     
      {{#if currentUser}}
+
     <form class='income-form'>
         <p>Enter your income</p>
         <input type='text' class='income' placeholder="Type to add a new income" />
           <button type="submit">Save</button>
     </form>
-    
       <ul>
        Incomes
           {{#each incomes}}
                {{>income}}
           {{/each}}
-    </ul>
+     </ul>
     {{else}}
     <div class="loading">
-        Welcome to your daily money! Go on, log in. You'll like it.
+        Welcome to your daily money! Go on, log in.
     </div>
     {{/if}}
 </body>

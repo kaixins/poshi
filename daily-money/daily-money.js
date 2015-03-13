@@ -7,7 +7,7 @@ if (Meteor.isClient) {
           // update the saved income
          console.log("submit");
          console.log($('.income-form input.income').val());
-        
+
         var text = $('.income-form input.income').val()
 
         Incomes.insert({
