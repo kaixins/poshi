@@ -10,16 +10,19 @@
      {{#if currentUser}}
 
     <form class='income-form'>
-        <p>Enter your income</p>
+        <p>Enter your income for this month</p>
         <input type='text' class='income' placeholder="Type to add a new income" />
           <button type="submit">Save</button>
     </form>
       <ul>
        Incomes
-          {{#each incomes}}
+          {{#each incomes_for_user}}
                {{>income}}
           {{/each}}
      </ul>
+    
+    {{>total}}
+    
     {{else}}
     <div class="loading">
         Welcome to your daily money! Go on, log in.
@@ -31,4 +34,8 @@
        <li>
        £{{value}} - By {{username}} at {{createdAt}} <button class="delete">&times;</button>   
        </li>
+</template>
+
+<template name="total">
+    Total: £{{total_income_for_user}}
 </template>
