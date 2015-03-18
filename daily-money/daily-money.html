@@ -21,7 +21,7 @@
           {{/each}}
      </ul>
     
-    {{>total}}
+    Total: £{{total_income_for_user}}
     
     {{else}}
     <div class="loading">
@@ -34,8 +34,4 @@
        <li>
        £{{value}} - By {{username}} at {{createdAt}} <button class="delete">&times;</button>   
        </li>
-</template>
-
-<template name="total">
-    Total: £{{total_income_for_user}}
 </template>

@@ -16,6 +16,8 @@ if (Meteor.isClient) {
 
         // Clear form
         event.target.text = "";
+        
+       // Meteor.call("")
 
         // Prevent default form submit
         return false;
