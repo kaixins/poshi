@@ -1,34 +1,101 @@
-<head>
-  <title>daily-money</title>
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+   <title>daily-money</title>
 </head>
 
-<body>
-  <div class="user">
-        {{> loginButtons}}
-    </div>
+<body>   
     
-     {{#if currentUser}}
+    <div class="container">
+         <div class="row tabbable">
+            <div class="span3 fixme">
+                  {{>sidebar}}
+            </div>
+             <div class="span8 well pull-right">
+                <div class="tab-content">
+                    <div id="today" class="tab-pane active">
+                       
+                        <h1>Today</h1>
+                    </div>
+                    <div id="out" class="tab-pane">
+                       
+                        <h1>out</h1>
+                    </div>
+                    <div id="in" class="tab-pane">
+                         <h1>in</h1>
+                        <form class='income-form'>
+                             <div class="form-group">
+                                 <p>Enter your income for this month</p>
+                                 <input type='text' class='income' placeholder="Type to add a new income" />
+                                 <button type="submit">Save</button>
+                             </div>
+                         </form>
+                        <ul>
+                         {{#each incomes_for_user}}
+                             {{>income}}
+                         {{/each}}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!--<div class="row ">
+            {{> Sidebar }}
+        </div>
+        <div class="row">
+             {{#if currentUser}}
+                <div class="active-tab tabbable today" id="today">
+                    TODAY
+                    £
+                </div>
+                <div class="tab outgoings" id="out">
+                    OUT
+                </div>
+                 <div class="tab income" id="in">
+                     <form class='income-form'>
+                         <div class="form-group">
+                             <p>Enter your income for this month</p>
+                             <input type='text' class='income' placeholder="Type to add a new income" />
+                             <button type="submit">Save</button>
+                         </div>
+                     </form>
+                      <ul>
+                         Incomes
+                         {{#each incomes_for_user}}
+                             {{>income}}
+                         {{/each}}
+                     </ul>
 
-    <form class='income-form'>
-        <p>Enter your income for this month</p>
-        <input type='text' class='income' placeholder="Type to add a new income" />
-          <button type="submit">Save</button>
-    </form>
-      <ul>
-       Incomes
-          {{#each incomes_for_user}}
-               {{>income}}
-          {{/each}}
-     </ul>
-    
-    Total: £{{total_income_for_user}}
-    
-    {{else}}
-    <div class="loading">
-        Welcome to your daily money! Go on, log in.
+                </div>
+              
+             {{else}}
+                <div class="loading">
+                    Welcome to your daily money! Go on, log in.
+                </div>
+             {{/if}}
+        </div> -->
     </div>
-    {{/if}}
 </body>
+
+<template name="sidebar">
+
+            <ul class="nav nav-pills nav-stacked">
+                <li class="active"><a href="#today" data-toggle="tab">Today</a></li>
+                <li><a href="#out" data-toggle="tab">Out</a></li>
+                <li><a href="#in" data-toggle="tab">In</a></li>
+            </ul>
+    
+</template>
+
+
+<template name="today">
+
+        Today
+    
+</template>
 
 <template name="income">
        <li>
