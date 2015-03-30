@@ -1,10 +1,10 @@
 Incomes = new Mongo.Collection("incomes");
-//Expenses = new Mongo.Collection("expenses");
+Expenses = new Mongo.Collection("expenses");
 
 if (Meteor.isClient) {
     
   Meteor.subscribe("incomes");
- // Meteor.subscribe("expenses");
+  Meteor.subscribe("expenses");
     
   Accounts.ui.config({
        passwordSignupFields: "USERNAME_ONLY"
@@ -13,31 +13,31 @@ if (Meteor.isClient) {
   Template.body.events({
       
 
-   /* 'submit .expense-form': function () {
+    'submit .expense-form': function () {
          
          console.log("submit");
          console.log($('.expense-form input.expense').val());
 
-        var amount = $('.expense-form input.expense').val()
-          var label = $('.income-form input.label').val();
+        var amount = $('.expense-form #expense-amount').val()
+        var label = $('.expense-form input.label').val();
 
-       Meteor.call("addExpense", amount);
+       Meteor.call("addExpense", amount, label);
 
         // Clear form
         event.target.text = "";
         
         // Prevent default form submit
         return false;
-    }, */
+    }, 
     'submit .income-form': function () {
           // update the saved income
          console.log("submit");
          console.log($('.income-form input.income').val());
 
-        var amount =  $('.income-form input.income').val();
+        var amount =  $('.income-form #income-amount').val();
         var label = $('.income-form input.label').val();
         
-       Meteor.call("addIncome", amount);
+       Meteor.call("addIncome", amount, label);
 
         // Clear form
         event.target.text = "";
@@ -52,7 +52,7 @@ if (Meteor.isClient) {
   //data
    Template.body.helpers({
      
-   /* expenses: function () {
+    expenses: function () {
       return Expenses.find({}, {sort: {createdAt: -1}});
     },
        
@@ -67,7 +67,6 @@ if (Meteor.isClient) {
         });
         return total;
     },
-     */  
     incomes: function () {
       return Incomes.find({}, {sort: {createdAt: -1}});
     },
@@ -93,30 +92,38 @@ if (Meteor.isClient) {
       }
   });
     
-    Template.Sidebar.rendered = function() {
-    
-    };
+  Template.expense.events({
+      "click .delete": function () {
+          console.log("deleting " + this._id);
+          Meteor.call("deleteExpense", this._id);
+      }
+  });
 //end client
 }
 
 Meteor.methods({
     
-    /*addExpense: function (amount) {
+    addExpense: function (amount, label) {
     // Make sure the user is logged in before inserting a task
     if (! Meteor.userId()) {
       throw new Meteor.Error("not-authorized");
     }
+        
+    console.log("insert expense " + amount);
 
     Expenses.insert({
           username: Meteor.user().username,
           value: amount,
-          label: 'label',
+          label: label,
           createdAt: new Date(),
           deleted: false,
           owner: Meteor.userId()
         });
-  },*/
-  addIncome: function (amount) {
+  },
+  deleteExpense: function (id) {
+     Expenses.remove(id);
+  },
+  addIncome: function (amount, label) {
     // Make sure the user is logged in before inserting a task
     if (! Meteor.userId()) {
       throw new Meteor.Error("not-authorized");
@@ -125,7 +132,7 @@ Meteor.methods({
      Incomes.insert({
           username: Meteor.user().username,
           value: amount,
-          label: 'label',
+          label: label,
           createdAt: new Date(),
           deleted: false,
           owner: Meteor.userId()
@@ -142,6 +149,9 @@ if (Meteor.isServer) {
     // code to run on server at startup
       Meteor.publish("incomes", function () {
         return Incomes.find();
+      });
+       Meteor.publish("expenses", function () {
+        return Expenses.find();
       });
   });
 }
