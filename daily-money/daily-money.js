@@ -2,162 +2,199 @@ Incomes = new Mongo.Collection("incomes");
 Expenses = new Mongo.Collection("expenses");
 
 if (Meteor.isClient) {
-    
-  Meteor.subscribe("incomes");
-  Meteor.subscribe("expenses");
-    
-  Accounts.ui.config({
-       passwordSignupFields: "USERNAME_ONLY"
-  });
 
-  Template.body.events({
- 
-  });
+    Meteor.subscribe("incomes");
+    Meteor.subscribe("expenses");
 
-  //data
-   Template.body.helpers({
-     
-    expenses: function () {
-      return Expenses.find({}, {sort: {createdAt: -1}});
-    },
-       
-    expenses_for_user: function () {
-      return Expenses.find({ owner : Meteor.userId() }, {sort: {createdAt: -1}});
-    },
-    
-    total_expenses_for_user: function () {
-       var total = 0;
-       Expenses.find({owner : Meteor.userId() }).map(function(income) {
-          total += parseInt(income.value);
-        });
-        return total;
-    },
-    incomes: function () {
-      return Incomes.find({}, {sort: {createdAt: -1}});
-    },
-       
-    incomes_for_user: function () {
-      return Incomes.find({ owner : Meteor.userId() }, {sort: {createdAt: -1}});
-    },
-    
-    total_income_for_user: function () {
-       var total = 0;
-        Incomes.find({owner : Meteor.userId() }).map(function(income) {
-          total += parseInt(income.value);
-        });
-        return total;
-    }  
-       
-  });
-    
-  Template.expenseForm.events({
-    'submit .expense-form': function () {
-         
-         console.log("submit");
-         console.log($('.expense-form input.amount').val());
+    Accounts.ui.config({
+        passwordSignupFields: "USERNAME_ONLY"
+    });
 
-        var amount = $('.expense-form input.amount').val()
-        var label = $('.expense-form input.label').val();
+    Template.body.helpers({
+        expenses: function() {
+            return Expenses.find({}, { sort: { createdAt: -1 } });
+        },
 
-       Meteor.call("addExpense", amount, label);
+        expenses_for_user: function() {
+            return Expenses.find({ owner: Meteor.userId() }, { sort: { createdAt: -1 } });
+        },
 
-        // Clear form
-        event.target.text = "";
+        total_expenses_for_user: function() {
+            var total = 0;
+            Expenses.find({ owner: Meteor.userId() }).map(function(expense) {
+                total += parseInt(expense.value);
+               //  console.log(expense.value)
+            });
+            return total;
+        },
+
+        incomes: function() {
+            return Incomes.find({}, { sort: { createdAt: -1 } });
+        },
+        incomes_for_user: function() {
+            return Incomes.find({ owner: Meteor.userId() }, { sort: { createdAt: -1 } });
+        },
+        total_income_for_user: function() {
+            var total = 0;
+            Incomes.find({ owner: Meteor.userId() }).map(function(income) {
+                total += parseInt(income.value);
+               // console.log(income.value)
+            });
+            return total;
+        },
+          total_now: function() {
+            var incomes = 0;
+            var expenses = 0;
+            
+            console.log("here");
+
+           Incomes.find({ owner: Meteor.userId() }).map(function(income) {
+                incomes += parseInt(income.value);
+                console.log(incomes.value)
+            });
+              
+            var expense = 0;
+            Expenses.find({ owner: Meteor.userId() }).map(function(expense) {
+                expenses += parseInt(expense.value);
+                console.log(expense.value)
+            });
+              
+            return incomes - expenses;
+            
+          
+            //return income - expense;
+        }
         
-        // Prevent default form submit
-        return false;
-    }
-  })
+        //idea - doesn't work yet. I want to reduce duplicated code, especially for income/expense
+        //total_for_user: function(type) {
+         //   var total = 0;
+        //    console.log("test");
+       //     console.log(type);
 
-  Template.incomeForm.events({
-       
-    'submit .income-form': function () {
-          // update the saved income
-         console.log("submit");
-         console.log($('.income-form input.amount').val());
+      //      if (type == "in") {
+      //          Incomes.find({ owner: Meteor.userId() }).map(function(income) {
+      //              total += parseInt(income.value);
+       //         });
+       //     } else if (type == "out") {
+      //          var total = 0;
+      //          Expenses.find({ owner: Meteor.userId() }).map(function(income) {
+       //             total += parseInt(income.value);
+      //          });
+          //  }
+       //     return total;
+        //
+      //  }
+    });
 
-        var amount =  $('.income-form input.amount').val();
-        var label = $('.income-form input.label').val();
-        
-       Meteor.call("addIncome", amount, label);
-
-        // Clear form
-        event.target.text = "";
-        
-        // Prevent default form submit
-        return false;
-    }
+    Template.today.helpers({
       
-      
-  })
-  
-  Template.income.events({
-      "click .delete": function () {
-          console.log("deleting " + this._id);
-          Meteor.call("deleteIncome", this._id);
-      }
-  });
+    });
     
-  Template.expense.events({
-      "click .delete": function () {
-          console.log("deleting " + this._id);
-          Meteor.call("deleteExpense", this._id);
-      }
-  });
-//end client
+    Template.expenseForm.events({
+        'submit .expense-form': function() {
+
+            console.log("submit");
+            console.log($('.expense-form input.amount').val());
+
+            var amount = $('.expense-form input.amount').val();
+            var label = $('.expense-form input.label').val();
+
+            Meteor.call("addExpense", amount, label);
+
+            // Clear form
+            event.target.text = "";
+
+            // Prevent default form submit
+            return false;
+        }
+    });
+    
+    Template.incomeForm.events({
+        'submit .income-form': function() {
+            // update the saved income
+            console.log("submit");
+            console.log($('.income-form input.amount').val());
+
+            var amount = $('.income-form input.amount').val();
+            var label = $('.income-form input.label').val();
+
+            Meteor.call("addIncome", amount, label);
+
+            // Clear form
+            event.target.text = "";
+
+            // Prevent default form submit
+            return false;
+        }
+    });
+    Template.income.events({
+        "click .delete": function() {
+            console.log("deleting " + this._id);
+            Meteor.call("deleteIncome", this._id);
+        }
+    });
+
+    Template.expense.events({
+        "click .delete": function() {
+            console.log("deleting " + this._id);
+            Meteor.call("deleteExpense", this._id);
+        }
+    });
+
+    //end client
 }
 
 Meteor.methods({
-    
-    addExpense: function (amount, label) {
-    // Make sure the user is logged in before inserting a task
-    if (! Meteor.userId()) {
-      throw new Meteor.Error("not-authorized");
-    }
-        
-    console.log("insert expense " + amount);
+    addExpense: function(amount, label) {
+        // Make sure the user is logged in before inserting a task
+        if (!Meteor.userId()) {
+            throw new Meteor.Error("not-authorized");
+        }
 
-    Expenses.insert({
-          username: Meteor.user().username,
-          value: amount,
-          label: label,
-          createdAt: new Date(),
-          deleted: false,
-          owner: Meteor.userId()
-        });
-  },
-  deleteExpense: function (id) {
-     Expenses.remove(id);
-  },
-  addIncome: function (amount, label) {
-    // Make sure the user is logged in before inserting a task
-    if (! Meteor.userId()) {
-      throw new Meteor.Error("not-authorized");
-    }
+        console.log("insert expense " + amount);
 
-     Incomes.insert({
-          username: Meteor.user().username,
-          value: amount,
-          label: label,
-          createdAt: new Date(),
-          deleted: false,
-          owner: Meteor.userId()
+        Expenses.insert({
+            username: Meteor.user().username,
+            value: amount,
+            label: label,
+            createdAt: new Date(),
+            deleted: false,
+            owner: Meteor.userId()
         });
-  },
-  deleteIncome: function (id) {
-     Incomes.remove(id);
-  }             
+    },
+    deleteExpense: function(id) {
+        Expenses.remove(id);
+    },
+
+    addIncome: function(amount, label) {
+        // Make sure the user is logged in before inserting a task
+        if (!Meteor.userId()) {
+            throw new Meteor.Error("not-authorized");
+        }
+
+        Incomes.insert({
+            username: Meteor.user().username,
+            value: amount,
+            label: label,
+            createdAt: new Date(),
+            deleted: false,
+            owner: Meteor.userId()
+        });
+    },
+    deleteIncome: function(id) {
+        Incomes.remove(id);
+    }
 });
 
 
 if (Meteor.isServer) {
-  Meteor.startup(function () {
-    // code to run on server at startup
-      Meteor.publish("incomes", function () {
-        return Incomes.find();
-      });
-       Meteor.publish("expenses", function () {
-        return Expenses.find();
-      });
-  });
+    Meteor.startup(function() {
+        // code to run on server at startup
+        Meteor.publish("incomes", function() {
+            return Incomes.find();
+        });
+        Meteor.publish("expenses", function() {
+            return Expenses.find();
+        });
+    });
 }

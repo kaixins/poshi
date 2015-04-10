@@ -18,9 +18,8 @@
              <div class="span8 well pull-right">
                 <div class="tab-content">
                     <div id="today" class="tab-pane active">
-                       
                         <h1>Today</h1>
-                        
+                        £ {{total_now}}
                     </div>
                     <div id="out" class="tab-pane">
                         <h1>out</h1>
@@ -30,6 +29,9 @@
                              {{>expense}}
                          {{/each}}
                         </ul>
+                        <div class="total">
+                            Total: {{total_expenses_for_user}}
+                        </div>
                     </div>
                     <div id="in" class="tab-pane">
                          <h1>in</h1>
@@ -39,6 +41,9 @@
                              {{>income}}
                          {{/each}}
                         </ul>
+                        <div class="total">
+                            Total: {{total_income_for_user}}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -48,13 +53,17 @@
 </body>
 
 <template name="sidebar">
+    <ul class="nav nav-pills nav-stacked">
+        <li class="active"><a href="#today" data-toggle="tab">Today</a></li>
+        <li><a href="#out" data-toggle="tab">Out</a></li>
+        <li><a href="#in" data-toggle="tab">In</a></li>
+    </ul>
+</template>
 
-            <ul class="nav nav-pills nav-stacked">
-                <li class="active"><a href="#today" data-toggle="tab">Today</a></li>
-                <li><a href="#out" data-toggle="tab">Out</a></li>
-                <li><a href="#in" data-toggle="tab">In</a></li>
-            </ul>
-    
+<template name="today">
+    <div class="total">
+       
+    </div>
 </template>
 
 <template name="expenseForm">
