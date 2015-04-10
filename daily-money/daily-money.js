@@ -11,42 +11,7 @@ if (Meteor.isClient) {
   });
 
   Template.body.events({
-      
-
-    'submit .expense-form': function () {
-         
-         console.log("submit");
-         console.log($('.expense-form input.expense').val());
-
-        var amount = $('.expense-form #expense-amount').val()
-        var label = $('.expense-form input.label').val();
-
-       Meteor.call("addExpense", amount, label);
-
-        // Clear form
-        event.target.text = "";
-        
-        // Prevent default form submit
-        return false;
-    }, 
-    'submit .income-form': function () {
-          // update the saved income
-         console.log("submit");
-         console.log($('.income-form input.income').val());
-
-        var amount =  $('.income-form #income-amount').val();
-        var label = $('.income-form input.label').val();
-        
-       Meteor.call("addIncome", amount, label);
-
-        // Clear form
-        event.target.text = "";
-        
-        // Prevent default form submit
-        return false;
-    }
-      
-      
+ 
   });
 
   //data
@@ -85,6 +50,47 @@ if (Meteor.isClient) {
        
   });
     
+  Template.expenseForm.events({
+    'submit .expense-form': function () {
+         
+         console.log("submit");
+         console.log($('.expense-form input.amount').val());
+
+        var amount = $('.expense-form input.amount').val()
+        var label = $('.expense-form input.label').val();
+
+       Meteor.call("addExpense", amount, label);
+
+        // Clear form
+        event.target.text = "";
+        
+        // Prevent default form submit
+        return false;
+    }
+  })
+
+  Template.incomeForm.events({
+       
+    'submit .income-form': function () {
+          // update the saved income
+         console.log("submit");
+         console.log($('.income-form input.amount').val());
+
+        var amount =  $('.income-form input.amount').val();
+        var label = $('.income-form input.label').val();
+        
+       Meteor.call("addIncome", amount, label);
+
+        // Clear form
+        event.target.text = "";
+        
+        // Prevent default form submit
+        return false;
+    }
+      
+      
+  })
+  
   Template.income.events({
       "click .delete": function () {
           console.log("deleting " + this._id);

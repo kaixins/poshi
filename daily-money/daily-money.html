@@ -9,7 +9,7 @@
     
     <div class="container">
         <div class="row header">
-            
+            {{> loginButtons}}
         </div>
          <div class="row tabbable">
             <div class="span3 fixme">
@@ -20,17 +20,11 @@
                     <div id="today" class="tab-pane active">
                        
                         <h1>Today</h1>
+                        
                     </div>
                     <div id="out" class="tab-pane">
                         <h1>out</h1>
-                        <form class='expense-form'>
-                             <div class="form-group">
-                                 <p>Enter your expense</p>
-                                 <input type='text' class='amount' placeholder="Type to add a new expense" />
-                                 <input type='text' class='label' placeholder="Label this expense so that you can find it later" />
-                                 <button type="submit">Save</button>
-                             </div>
-                         </form>
+                           {{>expenseForm}}
                          <ul>
                          {{#each expenses_for_user}}
                              {{>expense}}
@@ -39,14 +33,7 @@
                     </div>
                     <div id="in" class="tab-pane">
                          <h1>in</h1>
-                        <form class='income-form'>
-                             <div class="form-group">
-                                 <p>Enter your income for this month</p>
-                                 <input type='text' class='amount' placeholder="Type to add a new income" />
-                                 <input type='text' class='label' placeholder="Label this income - e.g. 'Pay'" />
-                                 <button type="submit">Save</button>
-                             </div>
-                         </form>
+                           {{>incomeForm}}
                         <ul>
                          {{#each incomes_for_user}}
                              {{>income}}
@@ -68,6 +55,28 @@
                 <li><a href="#in" data-toggle="tab">In</a></li>
             </ul>
     
+</template>
+
+<template name="expenseForm">
+    <form class='expense-form'>
+        <div class="form-group">
+            <p>Enter your expense</p>
+            <input type="number" min="0" class='amount' placeholder="Type to add a new expense" />
+            <input type='text' class='label' placeholder="Label this expense so that you can find it later" />
+            <button type="submit">Save</button>
+        </div>
+    </form>
+</template>
+
+<template name="incomeForm">
+    <form class='income-form'>
+        <div class="form-group">
+            <p>Enter your income for this month</p>
+            <input type="number" min="0" class='amount' placeholder="Type to add a new income" />
+            <input type='text' class='label' placeholder="Label this income - e.g. 'Pay'" />
+            <button type="submit">Save</button>
+        </div>
+    </form>
 </template>
 
 <template name="income">
