@@ -19,14 +19,14 @@
                 <div class="tab-content">
                     <div id="today" class="tab-pane active">
                         <h1>Today</h1>
-                        £ {{total_now}}
+                       {{>today}}
                     </div>
                     <div id="out" class="tab-pane">
                         <h1>out</h1>
                            {{>expenseForm}}
                          <ul>
                          {{#each expenses_for_user}}
-                             {{>expense}}
+                             {{>listItem}}
                          {{/each}}
                         </ul>
                         <div class="total">
@@ -38,7 +38,7 @@
                            {{>incomeForm}}
                         <ul>
                          {{#each incomes_for_user}}
-                             {{>income}}
+                             {{>listItem}}
                          {{/each}}
                         </ul>
                         <div class="total">
@@ -62,7 +62,7 @@
 
 <template name="today">
     <div class="total">
-       
+        £ {{total_now}}
     </div>
 </template>
 
@@ -88,14 +88,9 @@
     </form>
 </template>
 
-<template name="income">
+<template name="listItem">
        <li>
        £{{value}} - By {{username}} at {{createdAt}} - {{label}} <button class="delete">&times;</button>   
        </li>
 </template>
 
-<template name="expense">
-       <li>
-       £{{value}} - By {{username}} at {{createdAt}} - {{label}} <button class="delete">&times;</button>   
-       </li>
-</template>
